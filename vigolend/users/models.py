@@ -154,9 +154,11 @@ class User(AbstractUser):
 
 
     account_type = CharField(
-        verbose_name=_("Name of User"),
+        verbose_name=_("Account Type"),
         choices=ACCOUNT_TYPE,
-        blank=True, max_length=8,
+        default='borrower',
+        blank=True,null=True,
+        max_length=8,
         help_text=_("Account type"))
 
     name = CharField(_("Name of User"), blank=True, max_length=255)
