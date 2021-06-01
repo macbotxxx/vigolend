@@ -49,7 +49,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vigolend',
+        'NAME': 'vigolend2',
         'USER': 'postgres',
         'PASSWORD': 'M08034169322i',
         'HOST': 'localhost',

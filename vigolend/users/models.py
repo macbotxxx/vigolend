@@ -1,3 +1,4 @@
+from locations.models import Country
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -8,6 +9,77 @@ import uuid
 from django.utils import timezone
 
 
+
+class UserAddress(models.Model):
+
+     # CHOICES
+    ADDRESS_TYPE = (
+        ('current', _('Current Address')),
+        ('permanent', _("Permanent Address"))
+    )
+
+    id = models.UUIDField(
+        default = uuid.uuid4,
+        editable=False,
+        primary_key=True,
+        help_text=_("The unique identifier of the customer.")
+    )
+
+    type = models.CharField(
+        choices=ADDRESS_TYPE,
+        max_length=9,
+        help_text=_("The type of address."),
+        default='current',
+        verbose_name=_("Address Type")
+    )
+
+    user = models.ForeignKey(
+        'User',
+        verbose_name=_("User Profile"),
+        on_delete=models.PROTECT,
+        help_text=_("The user for whom address belongs to")
+    )
+
+    address_line_1 = models.CharField(
+        verbose_name=_("Address line 1"),
+        null=True, blank=True,
+        max_length=50,
+        help_text='Address line 1 of the user')
+
+    address_line_2 = models.CharField(
+        verbose_name=_("Address line 2"),
+        null=True, blank=True,
+        max_length=50,
+        help_text='Address line 2 of the user')
+
+    state = models.CharField(
+        verbose_name=_("State or Region"),
+        null=True, blank=True,
+        max_length=50,
+        help_text='State or Region of the user')
+
+    zip_post_code = models.CharField(
+        verbose_name=_("Zip Post Code"),
+        max_length=50,
+        null=True, blank=True,
+        help_text='Zip post code of the user address')
+
+    country = models.ForeignKey(
+        Country,
+        verbose_name=_("Country"),
+        null=True, blank=True,
+        on_delete=models.PROTECT,
+        help_text='Country of the user')
+
+   
+    #Metadata
+    class Meta :
+        verbose_name = _("User Address")
+        verbose_name_plural = _("User Address")
+
+
+    def __str__(self):
+       return self.field
 
 
 class UserManager(BaseUserManager):
@@ -42,8 +114,6 @@ class UserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
 
         return self._create_user(email, password, **extra_fields)
-
-
 
 
 class User(AbstractUser):
@@ -101,19 +171,22 @@ class User(AbstractUser):
         help_text=_("The last nammes of the customer.")
     )
 
-    current_address = models.CharField(
-        max_length=250,
+    current_address = models.ForeignKey(
+        UserAddress,
         verbose_name=_("Current address"),
-        blank=True,
-        null=True,
+        blank=True,null=True,
+        on_delete=models.PROTECT,
+        related_name= '+',
         help_text=_("The currently living address of the customer.")
     )
 
-    permanent_address = models.CharField(
-        max_length=250,
+    permanent_address = models.ForeignKey(
+        UserAddress,
         verbose_name=_("Permanent address"),
         blank=True,
         null=True,
+        on_delete=models.PROTECT,
+        related_name= '+',
         help_text=_("The current permanent address of the customer.")
     )
 
@@ -204,10 +277,11 @@ class User(AbstractUser):
         help_text=_("The Ip address recorded at the time if registeration.")
     )
 
-    country_of_residence = models.CharField(
-        max_length=250,
+    country_of_residence = models.ForeignKey(
+        Country,
         verbose_name=_("Country of Residence"),
         blank=True, null=True,
+        on_delete=models.SET_NULL,
         help_text=_("The country residence of the customer. KYC verification will be applied to this country and customer must provide proof of such residence as relevant in the country of jurisdiction.")
     )
 
