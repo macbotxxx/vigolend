@@ -97,6 +97,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "vigolend.users.apps.UsersConfig",
     "locations.apps.LocationsConfig",
+    "helpers",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
