@@ -58,6 +58,12 @@ class UserAddress(models.Model):
         max_length=50,
         help_text='State or Region of the user')
 
+    city = models.CharField(
+        verbose_name=_("City"),
+        max_length=50,
+        null=True, blank=True,
+        help_text=_("The city of the address of the user."))
+
     zip_post_code = models.CharField(
         verbose_name=_("Zip Post Code"),
         max_length=50,
@@ -79,7 +85,7 @@ class UserAddress(models.Model):
 
 
     def __str__(self):
-       return self.field
+       return self.user.name
 
 
 class UserManager(BaseUserManager):
@@ -132,6 +138,11 @@ class User(AbstractUser):
         ('cancelled', _('Cancelled')),
         ('rejected', _('Rejected/Refused'))
     )
+
+    ACCOUNT_TYPE = (
+        ('borrower', _('Borrower')),
+        ('investor', _('Investor')),
+    )
   
     #: First and last name do not cover name patterns around the globe
     id = models.UUIDField(
@@ -140,6 +151,13 @@ class User(AbstractUser):
         primary_key=True,
         help_text=_("The unique identifier of the customer.")
     )
+
+
+    account_type = CharField(
+        verbose_name=_("Name of User"),
+        choices=ACCOUNT_TYPE,
+        blank=True, max_length=8,
+        help_text=_("Account type"))
 
     name = CharField(_("Name of User"), blank=True, max_length=255)
 
