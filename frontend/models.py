@@ -6,6 +6,8 @@ class TeamMember (models.Model):
     """
         Entity represents a team member
     """
+    
+
     name = models.CharField(
         verbose_name=_("Team Member name"),
         max_length=50, 
@@ -17,7 +19,7 @@ class TeamMember (models.Model):
         verbose_name=_("Designation"),
         max_length=50, 
         null=True, blank=True,
-        help_text=_('The position of the team member.')
+        help_text=_('The position of the team member.') 
         )
 
     facebook = models.CharField(
@@ -31,7 +33,7 @@ class TeamMember (models.Model):
         verbose_name=_("Twitter Handle"),
         max_length=50, 
         null=True, blank=True,
-        help_text=_('The twitter handle of the team member.')
+        help_text=_('The twitter handle- without `@`.')
         )
 
     #Metadata
