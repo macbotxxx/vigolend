@@ -44,11 +44,11 @@ class CustomSignupForm(forms.Form):
         self.fields['first_name'].widget.attrs['placeholder'] = _('Legal First & Middle Names')
         self.fields['last_name'].widget.attrs['placeholder'] = _('Legal Last Names')
         self.fields['email'].widget.attrs['placeholder'] = _('Enter a valid Email Address')
-        self.fields['country_of_residence'].label = False
+        # self.fields['country_of_residence'].label = False
         self.fields['email'].help_text = _('So we can send you confirmation of your registration')
         self.fields['first_name'].help_text = _('As show in your documents')
         self.fields['last_name'].help_text = _('As show in your documents')
-        self.fields['account_type'].label = False
+        # self.fields['account_type'].label = False
         # self.helper = FormHelper()
         # self.helper.form_show_labels = False
  
